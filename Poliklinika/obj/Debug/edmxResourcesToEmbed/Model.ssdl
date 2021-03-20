@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Хранилище PoliklinikaModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Doctor">
+    <Key>
+      <PropertyRef Name="DoctorID" />
+    </Key>
+    <Property Name="DoctorID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Special" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Price" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Pacient">
+    <Key>
+      <PropertyRef Name="PacietnID" />
+    </Key>
+    <Property Name="PacietnID" Type="int" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Birthday" Type="date" Nullable="false" />
+    <Property Name="Series" Type="nvarchar" MaxLength="4" Nullable="false" />
+    <Property Name="Number" Type="nvarchar" MaxLength="6" Nullable="false" />
+    <Property Name="addres" Type="nvarchar(max)" />
+  </EntityType>
+  <EntityType Name="Users">
+    <Key>
+      <PropertyRef Name="Login" />
+    </Key>
+    <Property Name="Login" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Password" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Zapis">
+    <Key>
+      <PropertyRef Name="PacientID" />
+      <PropertyRef Name="DoctorID" />
+    </Key>
+    <Property Name="PacientID" Type="int" Nullable="false" />
+    <Property Name="Date" Type="date" Nullable="false" />
+    <Property Name="Time" Type="time" Precision="0" Nullable="false" />
+    <Property Name="DoctorID" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_Zapis_Doctor1">
+    <End Role="Doctor" Type="Self.Doctor" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Zapis" Type="Self.Zapis" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Doctor">
+        <PropertyRef Name="DoctorID" />
+      </Principal>
+      <Dependent Role="Zapis">
+        <PropertyRef Name="DoctorID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Zapis_Pacient1">
+    <End Role="Pacient" Type="Self.Pacient" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Zapis" Type="Self.Zapis" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Pacient">
+        <PropertyRef Name="PacietnID" />
+      </Principal>
+      <Dependent Role="Zapis">
+        <PropertyRef Name="PacientID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="Хранилище PoliklinikaModelContainer">
+    <EntitySet Name="Doctor" EntityType="Self.Doctor" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Pacient" EntityType="Self.Pacient" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Zapis" EntityType="Self.Zapis" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_Zapis_Doctor1" Association="Self.FK_Zapis_Doctor1">
+      <End Role="Doctor" EntitySet="Doctor" />
+      <End Role="Zapis" EntitySet="Zapis" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Zapis_Pacient1" Association="Self.FK_Zapis_Pacient1">
+      <End Role="Pacient" EntitySet="Pacient" />
+      <End Role="Zapis" EntitySet="Zapis" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
